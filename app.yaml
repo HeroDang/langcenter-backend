@@ -1,0 +1,16 @@
+runtime: nodejs16
+
+env_variables:
+  DB_NAME: 'lang-center'
+  DB_HOST: 'database-2.cvpjf7y4rwok.ap-southeast-1.rds.amazonaws.com'
+  DB_PORT: 5432
+  DB_USERNAME: 'postgres'
+  DB_PASSWORD: 'cHs0eqGfjFFj1kAeA4Sx'
+  DB_ENGINE: 'postgres'
+
+manual_scaling:
+  instances: 1
+resources:
+  cpu: 1
+  memory_gb: 0.5
+  disk_size_gb: 10

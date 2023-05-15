@@ -1,4 +1,5 @@
-const { Student, User, Class, Testing, Exam } = require('../models');
+const { Student, User, Class, Testing, Exam, Role } = require('../models');
+const hash = require('../utils/hashPassword');
 
 const create = async (req, res) => {
   try {
@@ -40,6 +41,56 @@ const create = async (req, res) => {
   } catch (err) {
     res.status(500).send({
       message: err || 'Some error occurred while creating the Student.',
+    });
+  }
+};
+
+// Remake function update a student by the id in the request (Maintain Phase 1) 
+const createPhase1 = async (req, res) => {
+  try {
+    // Validate request
+    if (!req.body) {
+      res.status(400).send({
+        message: 'Content can not be empty!',
+      });
+      return;
+    }
+
+    // get role lecturer
+    const role = await Role.findOne({
+      where: {
+        name: 'student',
+      },
+    });
+
+    // hash password
+    let password = hash(req.body.password);
+
+    // Create a Lecturer
+    const user = {
+      username: req.body.username,
+      password: password,
+      displayName: req.body.displayName,
+      email: req.body.email,
+      gender: req.body.gender,
+      phoneNumber: req.body.phoneNumber,
+      imageUrl: req.body.imageUrl,
+      address: req.body.address,
+      dob: req.body.dob,
+      idRole: role.idRole,
+      isActivated: true,
+    };
+
+    const createdUser = await User.create(user);
+    const createdStudent = await Student.create({ idUser: createdUser.idUser });
+
+    const response = await Student.findByPk(createdStudent.idStudent, {
+      include: [{ model: User }, { model: Class }], 
+    });
+    res.status(200).send(response);
+  } catch (error) {
+    res.status(500).send({
+      message: error.message || 'Bug.',
     });
   }
 };
@@ -132,6 +183,32 @@ const update = async (req, res) => {
     });
   }
 };
+
+// Remake function update a student by the id in the request (Maintain Phase 1) 
+const updatePhase1 = async (req, res) => {
+  try {
+    const idUser = req.body.idUser;
+    const updatedStudent = {
+      displayName: req.body.displayName,
+      gender: req.body.gender,
+      phoneNumber: req.body.phoneNumber,
+      imageUrl: req.body.imageUrl,
+      address: req.body.address,
+      dob: req.body.dob,
+    };
+
+    const response = await User.update(updatedStudent, {
+      where: { idUser },
+      returning: true,
+    });
+
+    res.status(200).json({ response });
+  } catch (error) {
+    res.status(500).json({ message: error });
+  }
+};
+
+
 const updateScore = async (req, res) => {
   // const idStudent = req.params.idStudent;
   const testings = req.body;
@@ -211,4 +288,4 @@ const findByIdClass = (req, res) => {
       });
     });
 };
-module.exports = { create, findAll, findOne, update, remove, updateScore, findByIdClass };
+module.exports = { create, findAll, findOne, update, remove, updateScore, findByIdClass, updateNew: updatePhase1, createPhase1};

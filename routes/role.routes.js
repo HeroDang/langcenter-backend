@@ -4,7 +4,7 @@ module.exports = app => {
   var router = require('express').Router();
 
   // Create a new Role
-  router.post('/', Role.create);
+  router.post('/create', Role.create);
 
   // Retrieve all Role
   router.get('/', Role.findAll);

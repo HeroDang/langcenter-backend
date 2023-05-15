@@ -5,8 +5,8 @@ module.exports = app => {
   var router = require('express').Router();
 
   // Create a new Student
-  router.post('/', Student.create);
-
+  router.post('/create', Student.createPhase1);
+  
   // Retrieve all Student
   router.get('/', Student.findAll);
 
@@ -15,6 +15,9 @@ module.exports = app => {
 
   // Update a Student with id
   router.patch('/:idStudent', Student.update);
+
+  // Update a Student with id (New)
+  router.patch('/updateNew/:idStudent', Student.updateNew);
 
   router.post('/updateScore/', Student.updateScore);
   // Delete a Student with id

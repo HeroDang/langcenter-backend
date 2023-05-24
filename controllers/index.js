@@ -23,6 +23,7 @@ const Column_Transcript = require('./column_transcript.controller');
 const Exam = require('./exam.controller');
 const TestType = require('./testType.controller');
 const Report = require('./report.controller');
+const Document = require('./document.controller');
 
 module.exports = {
   Course,
@@ -50,4 +51,5 @@ module.exports = {
   Exam,
   TestType,
   Report,
+  Document,
 };

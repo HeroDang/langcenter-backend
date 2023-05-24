@@ -72,6 +72,9 @@ module.exports = (sequelize, Sequelize) => {
     Class.hasMany(models.Exam, {
       foreignKey: 'idClass',
     });
+    Class.hasMany(models.Document, {
+      foreignKey: 'idClass',
+    });
     Class.belongsToMany(models.Bill, {
       through: models.BillInfo,
       foreignKey: 'idClass',

@@ -56,7 +56,7 @@ const createPhase1 = async (req, res) => {
       return;
     }
 
-    // get role lecturer
+    // get role student
     const role = await Role.findOne({
       where: {
         name: 'student',

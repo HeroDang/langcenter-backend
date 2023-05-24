@@ -8,7 +8,8 @@ const hash = text => {
   const hash = bcrypt.hashSync(text, salt);
   return hash;
 };
-const signin = (req, res) => {
+const signin = async (req, res) => {
+
   User.findOne({
     where: {
       username: req.body.user.username,
@@ -24,7 +25,6 @@ const signin = (req, res) => {
       // var passwordIsValid = req.body.user.password == user.password;
       if (!passwordIsValid) {
         return res.status(200).send({
-          accessToken: null,
           message: 'Invalid Password!',
         });
       }
@@ -41,6 +41,55 @@ const signin = (req, res) => {
       res.status(500).send({ message: err.message });
     });
 };
+
+//signin on web
+const signInWeb = async (req, res) => {
+
+  // get role student
+  const role = await Role.findOne({
+    where: {
+      name: 'student',
+    },
+  });
+
+  User.findOne({
+    where: {
+      username: req.body.user.username,
+    },
+    include: [{ model: Lecturer }, { model: Employee }, { model: Role }],
+  })
+    .then(async user => {
+      if (!user) {
+        return res.status(200).send({ message: 'User Not found.' });
+      }
+
+      if(user.idRole == role.idRole){
+        return res.status(200).send({
+          message: 'Can not log in with Student Account',
+        });
+      }
+
+      var passwordIsValid = bcrypt.compareSync(req.body.user.password, user.password);
+      // var passwordIsValid = req.body.user.password == user.password;
+      if (!passwordIsValid) {
+        return res.status(200).send({
+          message: 'Invalid Password!',
+        });
+      }
+
+      const token = jwt.sign({ id: user.idUser }, config.secret, {
+        expiresIn: config.jwtExpiration,
+      });
+
+      let refreshToken = await RefreshToken.createToken(user);
+
+      res.status(200).send({ user, accessToken: token, refreshToken: refreshToken });
+    })
+    .catch(err => {
+      res.status(500).send({ message: err.message });
+    });
+};
+
 const refreshToken = async (req, res) => {
   const { refreshToken: requestToken } = req.body;
 
@@ -171,4 +220,4 @@ const resetPassword = async (req, res) => {
       });
     });
 };
-module.exports = { signin, refreshToken, sendMail, resetPassword };
+module.exports = { signin, refreshToken, sendMail, resetPassword, signInWeb };

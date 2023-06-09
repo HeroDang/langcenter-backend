@@ -6,8 +6,13 @@ module.exports = app => {
   // Create a new Column_Transcript
   router.post('/', Column_Transcript.create);
 
+  router.post('/create', Column_Transcript.createPhase1);
+
   // Retrieve all Column_Transcript
   router.get('/', Column_Transcript.findAll);
+
+  //Find  by IdCourseType
+  router.get('/findByIdCourseType/:idCourseType', Column_Transcript.findByIdCourseType);
 
   // Retrieve a single Column_Transcript with id
   router.get('/:idColumn', Column_Transcript.findOne);

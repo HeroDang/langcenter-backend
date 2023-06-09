@@ -1,0 +1,23 @@
+{
+  "development": {
+    "username": "q",
+    "password": "12345678",
+    "database": "langcenter",
+    "host": "langcenter-group8-se109-uit2023.c0fsvphuwgak.ap-southeast-1.rds.amazonaws.com",
+    "dialect": "postgres"
+  },
+  "test": {
+    "username": "q",
+    "password": "12345678",
+    "database": "langcenter",
+    "host": "langcenter-group8-se109-uit2023.c0fsvphuwgak.ap-southeast-1.rds.amazonaws.com",
+    "dialect": "postgres"
+  },
+  "production": {
+    "username": "q",
+    "password": "12345678",
+    "database": "langcenter",
+    "host": "langcenter-group8-se109-uit2023.c0fsvphuwgak.ap-southeast-1.rds.amazonaws.com",
+    "dialect": "postgres"
+  }
+}

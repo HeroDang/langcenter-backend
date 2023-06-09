@@ -22,6 +22,10 @@ module.exports = (sequelize, Sequelize) => {
         type: Sequelize.FLOAT,
         field: 'max',
       },
+      idCourseType: {
+        type: Sequelize.UUID,
+        field: 'idcoursetype',
+      },
       isDeleted: {
         type: Sequelize.BOOLEAN,
         field: 'isdeleted',

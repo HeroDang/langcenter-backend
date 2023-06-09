@@ -27,10 +27,57 @@ const create = (req, res) => {
     });
 };
 
+const createPhase1 = (req, res) => {
+  // Validate request
+  if (!req.body) {
+    res.status(400).send({
+      message: 'Content can not be empty!',
+    });
+    return;
+  }
+
+  // Create a new object
+  const newObj = {
+    columnName: req.body.columnName,
+    min: req.body.min,
+    max: req.body.max,
+    idCourseType: req.body.idCourseType,
+  };
+  // Save
+  Column_Transcript.create(newObj)
+    .then(data => {
+      res.send(data);
+    })
+    .catch(err => {
+      res.status(500).send({
+        message: err.message,
+      });
+    });
+};
+
 // Retrieve all.
 const findAll = (req, res) => {
   Column_Transcript.findAll({
     where: { isDeleted: false },
+  })
+    .then(data => {
+      res.send(data);
+    })
+    .catch(err => {
+      res.status(500).send({
+        message: err.message,
+      });
+    });
+};
+
+//Find by idCourseType
+const findByIdCourseType = (req, res) => {
+  const idCourseType = req.params.idCourseType;
+
+  Column_Transcript.findAll({
+    where: {
+      idCourseType: idCourseType,
+    },
   })
     .then(data => {
       res.send(data);
@@ -88,6 +135,7 @@ const update = (req, res) => {
     });
 };
 
+
 // Delete a Column_Transcript with the specified id in the request
 const remove = (req, res) => {
   const idColumn = req.params.idColumn;
@@ -116,4 +164,4 @@ const remove = (req, res) => {
     });
 };
 
-module.exports = { create, update, findAll, findOne, remove };
+module.exports = { create, update, findAll, findOne, remove, createPhase1, findByIdCourseType };

@@ -13,6 +13,9 @@ module.exports = app => {
   // Retrieve a single Student with id
   router.get('/:idStudent', Student.findOne);
 
+  // Retrieve a single Student with idUser
+  router.get('/byIdUser/:idUser', Student.findOneByIdUser);
+
   // Update a Student with id
   router.patch('/:idStudent', Student.update);
 

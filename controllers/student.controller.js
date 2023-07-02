@@ -149,6 +149,39 @@ const findOne = (req, res) => {
     });
 };
 
+// Find a single Student with an id
+const findOneByIdUser = (req, res) => {
+  const idUser = req.params.idUser;
+
+  Student.findOne({
+    where: { idUser: idUser },
+    include: [
+      { model: User },
+      {
+        model: Class,
+      },
+      {
+        model: Exam,
+        include: [{ model: Class }],
+      },
+    ],
+  })
+    .then(data => {
+      if (data) {
+        res.send(data);
+      } else {
+        res.status(404).send({
+          message: `Cannot find Student. Maybe student was deleted`,
+        });
+      }
+    })
+    .catch(err => {
+      res.status(500).send({
+        message: err.message || 'Error retrieving Student',
+      });
+    });
+};
+
 // Update a Student by the id in the request
 const update = async (req, res) => {
   try {
@@ -288,4 +321,4 @@ const findByIdClass = (req, res) => {
       });
     });
 };
-module.exports = { create, findAll, findOne, update, remove, updateScore, findByIdClass, updateNew: updatePhase1, createPhase1};
+module.exports = { create, findAll, findOne, update, remove, updateScore, findByIdClass, updateNew: updatePhase1, createPhase1, findOneByIdUser};

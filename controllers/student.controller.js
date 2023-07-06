@@ -1,4 +1,5 @@
-const { Student, User, Class, Testing, Exam, Role } = require('../models');
+const { Student, User, Class, Testing, Exam, Role, ClassTime, TimeFrame } = require('../models');
+const timeFrame = require('../models/timeFrame');
 const hash = require('../utils/hashPassword');
 
 const create = async (req, res) => {
@@ -159,6 +160,12 @@ const findOneByIdUser = (req, res) => {
       { model: User },
       {
         model: Class,
+        include: [
+          { 
+            model: ClassTime,
+            include: [{ model: TimeFrame }],
+          }
+        ],
       },
       {
         model: Exam,

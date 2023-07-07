@@ -227,6 +227,7 @@ const update = async (req, res) => {
 // Remake function update a student by the id in the request (Maintain Phase 1) 
 const updatePhase1 = async (req, res) => {
   try {
+    const idStudent = req.params.idStudent;
     const idUser = req.body.idUser;
     const updatedStudent = {
       displayName: req.body.displayName,
@@ -236,6 +237,18 @@ const updatePhase1 = async (req, res) => {
       address: req.body.address,
       dob: req.body.dob,
     };
+
+    const { idClasses } = req.body;
+
+    if(idClasses && idClasses.length > 0){
+      const student = await Student.findByPk(idStudent);
+      const classes = await Class.findAll({
+        where: {
+          idClass: idClasses,
+        },
+      });
+      student.setClasses(classes);
+    }
 
     const response = await User.update(updatedStudent, {
       where: { idUser },

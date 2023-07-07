@@ -43,7 +43,7 @@ const create = async (req, res) => {
         },
       ],
     });
-    res.send(data);
+    res.status(200).json(data);
   } catch (err) {
     res.status(500).send({
       message: err.message,

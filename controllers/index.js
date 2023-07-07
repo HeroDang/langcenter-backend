@@ -24,6 +24,7 @@ const Exam = require('./exam.controller');
 const TestType = require('./testType.controller');
 const Report = require('./report.controller');
 const Document = require('./document.controller');
+const Learning = require('./learning.controller');
 
 module.exports = {
   Course,
@@ -42,6 +43,7 @@ module.exports = {
   Account,
   Employee,
   Role,
+  Learning,
   Lecturer,
   Student,
   User,

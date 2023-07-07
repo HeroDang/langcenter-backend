@@ -39,6 +39,7 @@ require('./routes/user.routes.js')(app);
 require('./routes/parameter.routes.js')(app);
 require('./routes/auth.routes.js')(app);
 require('./routes/report.routes.js')(app);
+require('./routes/learning.routes.js')(app);
 
 app.get('/', (req, res) => {
   res.status(200).json('Lang center');
